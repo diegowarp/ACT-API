@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 app.post('/simplify', async (req, res) => {
     const authHeaders = req.headers
 
-    if(authHeaders.secretkey !== "my-ultra-secret-key"){
+    if(authHeaders.secretkey !== process.env.ZUPLOS_API_KEY){
         res.json({message: "Access not authorized."})
         return
     }
