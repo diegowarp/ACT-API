@@ -42,18 +42,19 @@ app.post('/simplify', async (req, res) => {
 
 // Reducing texts
 app.post('/reducer', async (req, res) => {
+    const authHeaders = req.headers
     if(authHeaders.secretkey !== "my-ultra-secret-key"){
         res.json({message: "Access not authorized."})
         return
     }
     const text = req.body.text; // Destructure text from the request body
     try {
-        const prompt = `You are an assistant that was design to summarize (reduce) texts and contents. Your only task is to summarize as much as possible (reduce the length of the text) the text provided to you without loosing any important information on it. You must follow the same language as the text provided. Here is my text:  ${text}`
+        const prompt = `You are an assistant that was design to reduce texts and contents. Your only task is to reduce as much as possible the text provided to you without loosing any important information on it. You must follow the same language as the text provided. Here is my text:  ${text}`
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
         const content = response.text();
-        res.json({ summarized_text: content })
+        res.json({ reduced_text: content })
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Failed to summarize the text due to an internal error.' });
